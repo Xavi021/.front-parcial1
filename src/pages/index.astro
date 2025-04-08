@@ -1,0 +1,96 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const BUTTONS = [
+	{
+		name: "OBTENER PRODUCTOS",
+	},
+	{
+
+		name: "OBTENER UN PRODUCTO",
+	},
+	{
+
+		name: "AÑADIR PRODUCTO",
+	},
+	{
+
+		name: "RENOVAR PRODUCTO",
+	},
+	{
+
+		name: "REMOVER PRODUCTO",
+	},
+];
+---
+
+<Layout>
+	{
+		BUTTONS.map((btn) => (
+			<Fragment
+				set:html={`<button id="getAllProducto"> ${btn.name} </button></Fragment>`}
+			/>
+		))
+
+	}
+</Layout>
+
+<script>
+	const API = "https://localhost:3000";
+
+	const getAllProducto = async () => {
+		const data = await fetch("${API}/Producto").then((res) => res.json());
+		console.log(data);
+	};
+	const btn1 = document.getElementById("getAllProducto");
+	btn1?.addEventListener("click", () => getAllProducto());
+
+	const getProducto = async () => {
+		const data = await fetch("${API}/Producto/3").then((res) => res.json());
+		console.log(data);
+	};
+	const btn2 = document.getElementById("getProducto");
+	btn2?.addEventListener("click", () => getProducto());
+
+	const addProducto = async () => {
+		const newProducto = {
+			nombre: "borra tintas",
+			descripcion: "confiable",
+			precio: "900",
+			disponible: true,
+		};
+
+		const data = await fetch("${API}/Producto", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(newProducto),
+		}).then((res) => res.json());
+		console.log("data");
+	};
+	const btn3 = document.getElementById("addProducto");
+	btn3?.addEventListener("click", () => addProducto());
+
+	const updateProducto = async () => {
+		const productoMod = {
+			nombre: "tes",
+		};
+
+		const data = await fetch("${API}/Producto/3", {
+			method: "PATCH",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(productoMod),
+		}).then((res) => res.json());
+		console.log(data);
+	};
+	const btn4 = document.getElementById("updateProducto");
+	btn4?.addEventListener("click", () => updateProducto());
+
+	const deleteProducto = async () => {
+		const data = await fetch("${API}/Mesa/1", { method: "DELETE" }).then(
+			(res) => res.json(),
+		);
+		console.log(data);
+	};
+	const btn5 = document.getElementById("deleteProducto");
+	btn5?.addEventListener("click", () => deleteProducto());
+</script>
